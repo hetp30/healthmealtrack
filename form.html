@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Your Health Profile | HealthyMealTrack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .form-container {
+      padding: 2rem;
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .progress-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .progress-step.active {
+      color: #2563eb;
+    }
+
+    .progress-step.completed {
+      color: #10b981;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .progress-step.active .step-number {
+      background: #2563eb;
+      color: white;
+    }
+
+    .progress-step.completed .step-number {
+      background: #10b981;
+      color: white;
+    }
+
+    .form-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .condition-item {
+      background: #f8fafc;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .condition-item:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .condition-item.selected {
+      border-color: #10b981;
+      background: #ecfdf5;
+    }
+
+    .condition-item input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .condition-item label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .condition-item i {
+      color: #6b7280;
+      transition: color 0.3s ease;
+    }
+
+    .condition-item.selected i {
+      color: #10b981;
+    }
+
+    .condition-details {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      border-left: 4px solid #2563eb;
+      display: none;
+    }
+
+    .condition-details.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .success-message {
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      color: #065f46;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #374151;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 1rem;
+        border-radius: 15px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .conditions-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-user-plus"></i> Create Your Health Profile</h1>
+      <p>Help us provide personalized dietary recommendations based on your health conditions</p>
+    </div>
+
+    <div class="form-container">
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+      </a>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">
+          <div class="step-number">1</div>
+          <div>Basic Info</div>
+        </div>
+        <div class="progress-step" data-step="2">
+          <div class="step-number">2</div>
+          <div>Health Conditions</div>
+        </div>
+        <div class="progress-step" data-step="3">
+          <div class="step-number">3</div>
+          <div>Details</div>
+        </div>
+      </div>
+
+      <form id="healthForm">
+        <!-- Step 1: Basic Information -->
+        <div class="form-section active" id="step1">
+          <h2 style="margin-bottom: 1.5rem; color: #1f2937;">Basic Information</h2>
+          
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" required placeholder="Enter your full name">
+            <div class="error-message" id="name-error">Please enter your full name</div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="age">Age *</label>
+              <input type="number" id="age" min="1" max="120" required placeholder="Enter your age">
+              <div class="error-message" id="age-error">Please enter a valid age</div>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender *</label>
+              <select id="gender" required>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <div class="error-message" id="gender-error">Please select your gender</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="weight">Weight (kg) *</label>
+              <input type="number" id="weight" min="20" max="300" step="0.1" required placeholder="Enter your weight">
+              <div class="error-message" id="weight-error">Please enter a valid weight</div>
+            </div>
+            <div class="form-group">
+              <label for="height">Height (cm) *</label>
+              <input type="number" id="height" min="100" max="250" required placeholder="Enter your height">
+              <div class="error-message" id="height-error">Please enter a valid height</div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <div></div>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">
+              Next Step
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Health Conditions -->
+        <div class="form-section" id="step2">
+          <h2 style="margin-bottom: 1.5rem; color: #1f2937;">Health Conditions</h2>
+          <p style="margin-bottom: 1.5rem; color: #6b7280;">Select all conditions that apply to you. This helps us provide personalized dietary recommendations.</p>
+
+          <div class="conditions-grid">
+            <div class="condition-item" data-condition="diabetes">
+              <input type="checkbox" id="diabetes">
+              <label for="diabetes">
+                <i class="fas fa-check-circle"></i>
+                Diabetes
+              </label>
+            </div>
+            <div class="condition-item" data-condition="bp">
+              <input type="checkbox" id="bp">
+              <label for="bp">
+                <i class="fas fa-check-circle"></i>
+                High Blood Pressure
+              </label>
+            </div>
+            <div class="condition-item" data-condition="cholesterol">
+              <input type="checkbox" id="cholesterol">
+              <label for="cholesterol">
+                <i class="fas fa-check-circle"></i>
+                High Cholesterol
+              </label>
+            </div>
+            <div class="condition-item" data-condition="kidney">
+              <input type="checkbox" id="kidney">
+              <label for="kidney">
+                <i class="fas fa-check-circle"></i>
+                Kidney Disease
+              </label>
+            </div>
+            <div class="condition-item" data-condition="heart">
+              <input type="checkbox" id="heart">
+              <label for="heart">
+                <i class="fas fa-check-circle"></i>
+                Heart Disease
+              </label>
+            </div>
+            <div class="condition-item" data-condition="thyroid">
+              <input type="checkbox" id="thyroid">
+              <label for="thyroid">
+                <i class="fas fa-check-circle"></i>
+                Thyroid Disorders
+              </label>
+            </div>
+            <div class="condition-item" data-condition="obesity">
+              <input type="checkbox" id="obesity">
+              <label for="obesity">
+                <i class="fas fa-check-circle"></i>
+                Obesity
+              </label>
+            </div>
+            <div class="condition-item" data-condition="pcos">
+              <input type="checkbox" id="pcos">
+              <label for="pcos">
+                <i class="fas fa-check-circle"></i>
+                PCOS / PCOD
+              </label>
+            </div>
+            <div class="condition-item" data-condition="lactose">
+              <input type="checkbox" id="lactose">
+              <label for="lactose">
+                <i class="fas fa-check-circle"></i>
+                Lactose Intolerance
+              </label>
+            </div>
+            <div class="condition-item" data-condition="gluten">
+              <input type="checkbox" id="gluten">
+              <label for="gluten">
+                <i class="fas fa-check-circle"></i>
+                Gluten Sensitivity
+              </label>
+            </div>
+            <div class="condition-item" data-condition="anemia">
+              <input type="checkbox" id="anemia">
+              <label for="anemia">
+                <i class="fas fa-check-circle"></i>
+                Anemia
+              </label>
+            </div>
+            <div class="condition-item" data-condition="none">
+              <input type="checkbox" id="none">
+              <label for="none">
+                <i class="fas fa-check-circle"></i>
+                No Health Conditions
+              </label>
+            </div>
+          </div>
+
+          <!-- Custom Health Condition -->
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label for="customCondition">Other Health Conditions (Optional)</label>
+            <textarea id="customCondition" rows="3" placeholder="If you have any other health conditions not listed above, please describe them here..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">
+              <i class="fas fa-arrow-left"></i>
+              Previous
+            </button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">
+              Next Step
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Additional Details -->
+        <div class="form-section" id="step3">
+          <h2 style="margin-bottom: 1.5rem; color: #1f2937;">Additional Details</h2>
+          <p style="margin-bottom: 1.5rem; color: #6b7280;">Provide additional information about your selected health conditions for more personalized recommendations.</p>
+
+          <div id="condition-details-container">
+            <!-- Dynamic content will be inserted here -->
+          </div>
+
+          <div class="form-group">
+            <label for="medications">Current Medications (Optional)</label>
+            <textarea id="medications" rows="3" placeholder="List any medications you're currently taking"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="allergies">Food Allergies (Optional)</label>
+            <textarea id="allergies" rows="3" placeholder="List any food allergies or intolerances"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">
+              <i class="fas fa-arrow-left"></i>
+              Previous
+            </button>
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-check"></i>
+              Complete Profile
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="success-message" id="success-message">
+        <i class="fas fa-check-circle"></i>
+        Profile created successfully! Redirecting to meal upload...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+    const selectedConditions = new Set();
+
+    // Condition details mapping
+    const conditionDetails = {
+      diabetes: {
+        label: "Latest Blood Sugar Level (mg/dL)",
+        placeholder: "e.g., 120",
+        type: "text"
+      },
+      bp: {
+        label: "Latest Blood Pressure Reading",
+        placeholder: "e.g., 130/85 mmHg",
+        type: "text"
+      },
+      cholesterol: {
+        label: "Latest Cholesterol Level (mg/dL)",
+        placeholder: "e.g., 200",
+        type: "text"
+      },
+      kidney: {
+        label: "Latest Potassium Level (mg) or Creatinine",
+        placeholder: "e.g., 4.0",
+        type: "text"
+      },
+      heart: {
+        label: "Any Heart Test Readings",
+        placeholder: "e.g., ECG results, BP readings",
+        type: "text"
+      },
+      thyroid: {
+        label: "Latest TSH Level (µIU/mL)",
+        placeholder: "e.g., 2.5",
+        type: "text"
+      },
+      obesity: {
+        label: "Waist Size or BMI (Optional)",
+        placeholder: "e.g., 32 inches or BMI 28",
+        type: "text"
+      },
+      pcos: {
+        label: "Symptoms or Cycle Information",
+        placeholder: "e.g., irregular periods, weight gain",
+        type: "text"
+      },
+      lactose: {
+        label: "Reaction to Dairy Products",
+        placeholder: "e.g., bloating, diarrhea",
+        type: "text"
+      },
+      gluten: {
+        label: "Symptoms on Gluten Intake",
+        placeholder: "e.g., stomach pain, fatigue",
+        type: "text"
+      },
+      anemia: {
+        label: "Latest Hemoglobin Level (g/dL)",
+        placeholder: "e.g., 12.5",
+        type: "text"
+      }
+    };
+
+    // Initialize condition selection
+    document.querySelectorAll('.condition-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const checkbox = this.querySelector('input[type="checkbox"]');
+        const condition = this.dataset.condition;
+        
+        if (condition === 'none') {
+          // If "none" is selected, uncheck all others
+          document.querySelectorAll('.condition-item input[type="checkbox"]').forEach(cb => {
+            if (cb !== checkbox) cb.checked = false;
+          });
+          document.querySelectorAll('.condition-item').forEach(ci => {
+            ci.classList.remove('selected');
+          });
+          selectedConditions.clear();
+        } else {
+          // Uncheck "none" if other conditions are selected
+          document.getElementById('none').checked = false;
+          document.querySelector('[data-condition="none"]').classList.remove('selected');
+        }
+        
+        checkbox.checked = !checkbox.checked;
+        this.classList.toggle('selected', checkbox.checked);
+        
+        if (checkbox.checked) {
+          selectedConditions.add(condition);
+        } else {
+          selectedConditions.delete(condition);
+        }
+      });
+    });
+
+    function nextStep() {
+      if (validateCurrentStep()) {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateStepDisplay();
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepDisplay();
+      }
+    }
+
+    function updateStepDisplay() {
+      // Update progress bar
+      document.querySelectorAll('.progress-step').forEach((step, index) => {
+        const stepNum = index + 1;
+        step.classList.remove('active', 'completed');
+        if (stepNum < currentStep) {
+          step.classList.add('completed');
+        } else if (stepNum === currentStep) {
+          step.classList.add('active');
+        }
+      });
+
+      // Update form sections
+      document.querySelectorAll('.form-section').forEach((section, index) => {
+        section.classList.remove('active');
+        if (index + 1 === currentStep) {
+          section.classList.add('active');
+        }
+      });
+
+      // Update condition details in step 3
+      if (currentStep === 3) {
+        updateConditionDetails();
+      }
+    }
+
+    function updateConditionDetails() {
+      const container = document.getElementById('condition-details-container');
+      container.innerHTML = '';
+
+      selectedConditions.forEach(condition => {
+        if (conditionDetails[condition]) {
+          const detail = conditionDetails[condition];
+          const detailDiv = document.createElement('div');
+          detailDiv.className = 'condition-details show';
+          detailDiv.innerHTML = `
+            <h4 style="margin-bottom: 0.5rem; color: #1f2937;">${detail.label}</h4>
+            <input type="${detail.type}" 
+                   id="${condition}_value" 
+                   placeholder="${detail.placeholder}"
+                   class="form-group">
+          `;
+          container.appendChild(detailDiv);
+        }
+      });
+    }
+
+    function validateCurrentStep() {
+      let isValid = true;
+      const currentSection = document.getElementById(`step${currentStep}`);
+      
+      // Clear previous errors
+      currentSection.querySelectorAll('.error-message').forEach(msg => {
+        msg.style.display = 'none';
+      });
+
+      if (currentStep === 1) {
+        const requiredFields = ['name', 'age', 'gender', 'weight', 'height'];
+        requiredFields.forEach(field => {
+          const input = document.getElementById(field);
+          if (!input.value.trim()) {
+            document.getElementById(`${field}-error`).style.display = 'block';
+            isValid = false;
+          }
+        });
+      } else if (currentStep === 2) {
+        if (selectedConditions.size === 0) {
+          alert('Please select at least one health condition or "No Health Conditions"');
+          isValid = false;
+        }
+      }
+
+      return isValid;
+    }
+
+    // Form submission
+    document.getElementById('healthForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (validateCurrentStep()) {
+        // Simulate form submission
+        const successMessage = document.getElementById('success-message');
+        successMessage.style.display = 'block';
+        
+        // Redirect to meal upload page after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 2000);
+      }
+    });
+
+    // Add smooth animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.container');
+      container.style.opacity = '0';
+      container.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        container.style.transition = 'all 0.6s ease';
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+      }, 100);
+    });
+  </script>
+</body>
+</html>

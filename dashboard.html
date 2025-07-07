@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | HealthyMealTrack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8fafc;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 280px;
+      background: white;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      color: #10b981;
+    }
+
+    .nav-menu {
+      padding: 1rem 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 2rem;
+      color: #6b7280;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: #eff6ff;
+      color: #2563eb;
+      border-left-color: #2563eb;
+    }
+
+    .nav-item i {
+      width: 20px;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: white;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .main-section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      height: fit-content;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+
+    .upload-area:hover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .upload-area.dragover {
+      border-color: #10b981;
+      background: #ecfdf5;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .upload-text {
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-hint {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+
+    /* Meal Cards */
+    .meal-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .meal-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .meal-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .meal-image {
+      width: 100%;
+      height: 200px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 2rem;
+    }
+
+    .meal-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .meal-content {
+      padding: 1.5rem;
+    }
+
+    .meal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .meal-time {
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .nutrition-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .nutrition-item {
+      text-align: center;
+    }
+
+    .nutrition-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .nutrition-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-transform: uppercase;
+    }
+
+    .health-alert {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+    }
+
+    .health-alert.warning {
+      background: #fffbeb;
+      border-color: #fed7aa;
+      color: #d97706;
+    }
+
+    .health-alert.success {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #059669;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-card.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .stat-card.warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .stat-card.danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    /* Chatbot */
+    .chatbot {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .chatbot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chatbot-icon {
+      width: 32px;
+      height: 32px;
+      background: #2563eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .chat-input button {
+      padding: 0.75rem 1rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .chat-input button:hover {
+      background: #1d4ed8;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .dashboard-grid {
+        padding: 1rem;
+      }
+
+      .main-section,
+      .sidebar-section {
+        padding: 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meal-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-heartbeat"></i>
+        HealthyMealTrack
+      </div>
+    </div>
+    <div class="nav-menu">
+      <a href="#" class="nav-item active">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-upload"></i>
+        Upload Meals
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-chart-line"></i>
+        Progress
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-robot"></i>
+        AI Assistant
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-trophy"></i>
+        Achievements
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-cog"></i>
+        Settings
+      </a>
+      <a href="index.html" class="nav-item">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <div>
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1>Welcome back, John!</h1>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar">JD</div>
+        <span>John Doe</span>
+      </div>
+    </header>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Main Section -->
+      <div class="main-section fade-in-up">
+        <div class="section-header">
+          <h2 class="section-title">Today's Meals</h2>
+          <button class="btn btn-primary" onclick="openUploadModal()">
+            <i class="fas fa-plus"></i>
+            Add Meal
+          </button>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea" onclick="triggerFileUpload()">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text">Upload your meal photos</div>
+          <div class="upload-hint">Drag & drop or click to browse</div>
+          <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Meal Cards -->
+        <div class="meal-cards" id="mealCards">
+          <!-- Sample meal cards will be generated here -->
+        </div>
+      </div>
+
+      <!-- Sidebar Section -->
+      <div class="sidebar-section fade-in-up">
+        <!-- Health Stats -->
+        <div class="section-header">
+          <h3 class="section-title">Health Overview</h3>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card success">
+            <div class="stat-value">7</div>
+            <div class="stat-label">Healthy Days</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Warnings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">85%</div>
+            <div class="stat-label">Compliance</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1,250</div>
+            <div class="stat-label">Points</div>
+          </div>
+        </div>
+
+        <!-- AI Chatbot -->
+        <div class="chatbot">
+          <div class="chatbot-header">
+            <div class="chatbot-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h4>AI Health Assistant</h4>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="Ask about food safety..." id="chatInput">
+            <button onclick="sendMessage()">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Upload Meal</h3>
+        <button onclick="closeUploadModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Meal Type</label>
+          <select id="mealType">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Upload Photo</label>
+          <input type="file" accept="image/*" id="mealPhoto">
+        </div>
+        <div class="form-group">
+          <label>Description (Optional)</label>
+          <textarea id="mealDescription" placeholder="Describe what you ate..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeUploadModal()">Cancel</button>
+        <button onclick="submitMeal()" class="btn-primary">Upload Meal</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: #1f2937;
+    }
+
+    .modal-header button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+  </style>
+
+  <script>
+    // Sample meal data
+    const sampleMeals = [
+      {
+        id: 1,
+        type: 'Lunch',
+        time: '12:30 PM',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        title: 'Grilled Chicken Salad',
+        nutrition: {
+          calories: 320,
+          protein: 28,
+          carbs: 15
+        },
+        alert: {
+          type: 'success',
+          message: 'Great choice! Low in sodium and high in protein.'
+        }
+      },
+      {
+        id: 2,
+        type: 'Dinner',
+        time: '7:45 PM',
+        image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+        title: 'Pasta with Tomato Sauce',
+        nutrition: {
+          calories: 450,
+          protein: 12,
+          carbs: 65
+        },
+        alert: {
+          type: 'warning',
+          message: 'High in carbs. Consider smaller portion for diabetes management.'
+        }
+      }
+    ];
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      renderMealCards();
+      setupFileUpload();
+    });
+
+    function renderMealCards() {
+      const mealCardsContainer = document.getElementById('mealCards');
+      mealCardsContainer.innerHTML = '';
+
+      sampleMeals.forEach(meal => {
+        const mealCard = createMealCard(meal);
+        mealCardsContainer.appendChild(mealCard);
+      });
+    }
+
+    function createMealCard(meal) {
+      const card = document.createElement('div');
+      card.className = 'meal-card fade-in-up';
+      card.innerHTML = `
+        <div class="meal-image">
+          <img src="${meal.image}" alt="${meal.title}">
+        </div>
+        <div class="meal-content">
+          <div class="meal-title">${meal.title}</div>
+          <div class="meal-time">${meal.type} • ${meal.time}</div>
+          <div class="nutrition-info">
+            <div class="nutrition-item">
+              <div class="nutrition-value">${meal.nutrition.calories}</div>
+              <div class="nutrition-label">Calories</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-value">${meal.nutrition.protein}g</div>
+              <div class="nutrition-label">Protein</div>
+            </div>
+            <div class="nutrition-item">
+              <div class="nutrition-value">${meal.nutrition.carbs}g</div>
+              <div class="nutrition-label">Carbs</div>
+            </div>
+          </div>
+          <div class="health-alert ${meal.alert.type}">
+            <i class="fas fa-info-circle"></i>
+            ${meal.alert.message}
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function setupFileUpload() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+
+      // Drag and drop functionality
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+      });
+    }
+
+    function triggerFileUpload() {
+      document.getElementById('fileInput').click();
+    }
+
+    function handleFiles(files) {
+      Array.from(files).forEach(file => {
+        if (file.type.startsWith('image/')) {
+          // Simulate AI analysis
+          setTimeout(() => {
+            addNewMeal(file);
+          }, 2000);
+        }
+      });
+    }
+
+    function addNewMeal(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const newMeal = {
+          id: Date.now(),
+          type: 'New Meal',
+          time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+          image: e.target.result,
+          title: 'Analyzing...',
+          nutrition: {
+            calories: '--',
+            protein: '--',
+            carbs: '--'
+          },
+          alert: {
+            type: 'info',
+            message: 'AI is analyzing your meal...'
+          }
+        };
+
+        const mealCardsContainer = document.getElementById('mealCards');
+        const mealCard = createMealCard(newMeal);
+        mealCardsContainer.insertBefore(mealCard, mealCardsContainer.firstChild);
+
+        // Simulate AI analysis completion
+        setTimeout(() => {
+          updateMealAnalysis(newMeal.id);
+        }, 3000);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateMealAnalysis(mealId) {
+      // Simulate AI analysis results
+      const mealCard = document.querySelector(`[data-meal-id="${mealId}"]`);
+      if (mealCard) {
+        // Update with analysis results
+        console.log('AI analysis completed for meal:', mealId);
+      }
+    }
+
+    function openUploadModal() {
+      document.getElementById('uploadModal').style.display = 'flex';
+    }
+
+    function closeUploadModal() {
+      document.getElementById('uploadModal').style.display = 'none';
+    }
+
+    function submitMeal() {
+      const mealType = document.getElementById('mealType').value;
+      const mealPhoto = document.getElementById('mealPhoto').files[0];
+      const mealDescription = document.getElementById('mealDescription').value;
+
+      if (mealPhoto) {
+        handleFiles([mealPhoto]);
+        closeUploadModal();
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (message) {
+        // Simulate AI response
+        console.log('User message:', message);
+        input.value = '';
+        
+        // Show response (in a real app, this would be an API call)
+        setTimeout(() => {
+          alert('AI Assistant: I\'m analyzing your question. In a real implementation, this would provide personalized dietary advice based on your health profile.');
+        }, 1000);
+      }
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(e) {
+      const sidebar = document.getElementById('sidebar');
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      
+      if (window.innerWidth <= 1024 && 
+          !sidebar.contains(e.target) && 
+          !mobileMenuBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    });
+
+    // Handle Enter key in chat
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html> 

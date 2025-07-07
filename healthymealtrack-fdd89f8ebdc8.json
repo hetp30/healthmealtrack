@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "healthymealtrack",
+  "private_key_id": "fdd89f8ebdc8598f8f996938b73635360f6a1c26",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCiiFy1dD1+AxkW\nTyAV0uveyz57Gm0o8wmkjr/lTCwSxlV3SchU9Vsq23zYN8QAMe6Nt9xmiSc2ac4s\n4i3V8A3m/sfoapmUC1iGrMUyY+2y2b5nVCIhcSMa9OFWiR9mmlKEzxHlygDXVO4Z\nNIH4Sdl6mpw5buFYzMCuOaqU8dUT+YJtuXQbb1XSjvhibnrhb0grzfqak6GFM/xS\n10MShNy4YXHnmMudAc6oW1YA9jBIl63b4cYEX2pjV5hVeTWWJUmXfWQxi9eKl/jD\nTCD0Al3k5NoZziAW8aAlQ44bsXMGaZQ68lVHTIMYt53nT/cPHCy+Axq53AMbz0Fl\nFFr2b7ChAgMBAAECggEAAxxNe+qI173K796dTFWgToAAxt3bW3aFR3k06nhB+q0B\nizomA5w7fa88LS4qCd/qwxsS9IJo9fVh7QF6I5dHyNU08bmCjW8HJ3Kshnmbnbnl\nlzgovA+cfqJTorKWn4HSFPkajFWInRZixSg4WY5eQ2asmTvKQ8cNY/g2D8ouDAcJ\nXTGtgxt7fhqvXKsxOWwnOu9IWk4wDjlmlBHQfa5zimWUAMlAr6pXIMgFrGFxVVD7\nX35u/BHHeecSQIa3JaOU0Q4fPwHhFAUb/P8swdO3mguBhJb7dL9S7zObDp0TpUmd\nxhL8XZn2seGVdYRA3+ir6qsJX6MtVneyRlaMZ3JwsQKBgQDPVYoF1wWB9pQ8s1wZ\nzqlTw437o/YQjVjuSZxBX8M8/fgcg9/ileuEbX5DR4yEffzv2dXARKXB2hA5E4f5\nKf5r5TAD8uCHWjFA71/Uiey9qqRni5gSK4Kou09mgF6YN7wxnJ3IKczHWo5w/q4f\nOocTzaeprQ+tYm3NK9gBcA3G+QKBgQDIrsGHUGfeQELkOpEzr/W8Qpb9DrEWN2SC\nbv/Ns/4lpxllPEcTZXsO9pxHWjmCaDZIjMbIq2nyFFD8CsoQNlLCAyQItTquJkJ8\n0cwzt5lXAITPZ3tj2js9UKLrMpcGNSLV81an1ddwQVgZ9Rcfy7HCRw+Ogf7oPiUK\nSRcNCYBY6QKBgAxmwWq4AcxUQ2meENQ6WEZ6W/PBSuaSjc8y9/WxFKyBRGXwPWQA\nM6YoJnU/wlfqcUancPGfKYr+0BmZ4Xg12tH5U3XpASUXb/rCVqkP1ulBW7QV1XLA\nx3/wND+dTgssykTtaUKfvW/vKrX3hdK4XXwBwRWVFGr6iDbNeI4ddbWBAoGARR/c\nzW0muelMoSyDQ1iCvlv5giUDXnGqDzuIpSQwkGukVbiTitzTrG3JmtI7KO4YdJj5\nB7nzfkz9MDPPMhJkIyvNx6oVElNfZ3skaVP+X3dwR7iPSe+rpA0YcQc1+g9ndmah\nHKKN2L7JR/eiBXO2QQMVGrMwSHLPc2GFrRnuubECgYBYoom7nzFXWwIXE/qmF83t\nGfiNcWPZe+rZos2CjQPZ1wzinS+IkNl9zH80hz/S+MehPXrhk2UmHAPcGxk+8TmE\n5fQuhtXSeFf7rTgeyyyWeBv2jYrgFL1PbCgBhqkggsqbbd6R1xGQEMj8wT8rpE+7\n5iQj8qN4Mak3/Lr7laWmaA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "healthymealtrack-vision-35@healthymealtrack.iam.gserviceaccount.com",
+  "client_id": "113216576136892580802",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/healthymealtrack-vision-35%40healthymealtrack.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
