@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="donate" style="padding-top:120px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Support Our Farmers</h2>
+                <p class="section-subtitle">Help farmers recover from natural calamities and continue sustainable farming</p>
+            </div>
+            <div id="donateFarmers" class="farmers-grid">
+                <!-- Farmer donation cards will be rendered here by JS -->
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+    <script>
+    // Donation page logic (multi-farmer)
+    document.addEventListener('DOMContentLoaded', function() {
+        const grid = document.getElementById('donateFarmers');
+        let farmers = [];
+        try {
+            farmers = JSON.parse(localStorage.getItem('farmers')) || [];
+        } catch (e) { farmers = []; }
+        if (!farmers.length) {
+            grid.innerHTML = '<p>No farmers found. Please register as a farmer first.</p>';
+            return;
+        }
+        grid.innerHTML = '';
+        function getCertBadge(level) {
+            if (level === '1') return '<span class="certification-badge level-1">Level 1</span>';
+            if (level === '2') return '<span class="certification-badge level-2">Level 2</span>';
+            if (level === '3') return '<span class="certification-badge level-3">Level 3</span>';
+            return '';
+        }
+        farmers.forEach((farmer, fidx) => {
+            let badge = getCertBadge(farmer.certificationLevel);
+            let crops = farmer.crops && farmer.crops.length ? farmer.crops.map(c => c.cropType).join(', ') : 'N/A';
+            let img = (farmer.images && farmer.images[0]) ? farmer.images[0].data : 'https://via.placeholder.com/120x120?text=Farmer';
+            grid.innerHTML += `
+                <div class="farmer-card">
+                    <div class="farmer-image">
+                        <img src="${img}" alt="Farmer" style="width:80px;height:80px;border-radius:10px;">
+                        ${badge}
+                    </div>
+                    <div class="farmer-info">
+                        <h3>${farmer.name}</h3>
+                        <p class="farmer-specialty">Crops: ${crops}</p>
+                        <form class="donate-form">
+                            <label>Donate: </label>
+                            <button type="button" class="btn btn-secondary donate-btn" data-amt="500" data-farmer="${fidx}">₹500</button>
+                            <button type="button" class="btn btn-secondary donate-btn" data-amt="1000" data-farmer="${fidx}">₹1000</button>
+                            <button type="button" class="btn btn-secondary donate-btn" data-amt="2000" data-farmer="${fidx}">₹2000</button>
+                            <input type="number" min="100" step="100" placeholder="Custom" class="custom-donation" style="width:80px; margin-left:8px;">
+                            <button type="button" class="btn btn-primary donate-btn-custom" data-farmer="${fidx}">Donate</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        });
+        // Donation button logic
+        grid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('donate-btn')) {
+                e.preventDefault();
+                const amt = e.target.getAttribute('data-amt');
+                const idx = e.target.getAttribute('data-farmer');
+                localStorage.setItem('currentFarmerIndex', idx);
+                showNotification('Thank you for donating ₹' + amt + ' to our farmer!', 'success');
+            }
+            if (e.target.classList.contains('donate-btn-custom')) {
+                e.preventDefault();
+                const idx = e.target.getAttribute('data-farmer');
+                localStorage.setItem('currentFarmerIndex', idx);
+                const input = e.target.parentElement.querySelector('.custom-donation');
+                const amt = input.value;
+                if (!amt || isNaN(amt) || amt < 100) {
+                    showNotification('Please enter a valid amount (min ₹100).', 'error');
+                    return;
+                }
+                showNotification('Thank you for donating ₹' + amt + ' to our farmer!', 'success');
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-container { display: flex; min-height: 100vh; }
+        .admin-sidebar {
+            width: 240px;
+            background: var(--primary-green);
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            min-height: 100vh;
+        }
+        .admin-sidebar h2 { color: var(--accent-gold); font-size: 1.5rem; margin-bottom: 2rem; }
+        .admin-sidebar ul { list-style: none; padding: 0; }
+        .admin-sidebar li { margin-bottom: 1.2rem; }
+        .admin-sidebar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .admin-sidebar a.active, .admin-sidebar a:hover {
+            background: var(--accent-gold);
+            color: var(--primary-green);
+        }
+        .admin-main {
+            flex: 1;
+            background: var(--warm-white);
+            padding: 2rem;
+            overflow-x: auto;
+        }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        .admin-table th, .admin-table td {
+            border: 1px solid #eee;
+            padding: 0.8rem 1rem;
+            text-align: left;
+        }
+        .admin-table th { background: var(--primary-green); color: white; }
+        .admin-table tr:nth-child(even) { background: #f9f9f9; }
+        .admin-actions button {
+            margin-right: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-approve { background: #4caf50; color: white; }
+        .btn-reject { background: #f44336; color: white; }
+        .btn-edit { background: #2196f3; color: white; }
+        .btn-delete { background: #b71c1c; color: white; }
+        .admin-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .admin-stat {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px var(--shadow);
+            padding: 1.5rem 2rem;
+            min-width: 180px;
+            text-align: center;
+        }
+        .admin-stat h3 { color: var(--primary-green); font-size: 2rem; margin-bottom: 0.5rem; }
+        .admin-stat p { color: var(--text-light); font-size: 1rem; }
+        @media (max-width: 900px) {
+            .admin-container { flex-direction: column; }
+            .admin-sidebar { width: 100%; min-height: unset; flex-direction: row; gap: 1rem; padding: 1rem; }
+            .admin-sidebar ul { display: flex; gap: 1rem; }
+            .admin-main { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link active">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+    <div class="admin-container" style="padding-top:80px;">
+        <aside class="admin-sidebar">
+            <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
+            <ul>
+                <li><a href="#dashboard" class="admin-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#farmers" class="admin-link"><i class="fas fa-users"></i> Farmers</a></li>
+                <li><a href="#products" class="admin-link"><i class="fas fa-apple-alt"></i> Products</a></li>
+                <li><a href="#donations" class="admin-link"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
+                <li><a href="#orders" class="admin-link"><i class="fas fa-shopping-basket"></i> Orders</a></li>
+            </ul>
+        </aside>
+        <main class="admin-main">
+            <!-- Dashboard -->
+            <section id="dashboard" class="admin-section active">
+                <h2>Dashboard</h2>
+                <div class="admin-stats">
+                    <div class="admin-stat"><h3 id="statFarmers">0</h3><p>Farmers</p></div>
+                    <div class="admin-stat"><h3 id="statProducts">0</h3><p>Products</p></div>
+                    <div class="admin-stat"><h3 id="statDonations">0</h3><p>Donations</p></div>
+                    <div class="admin-stat"><h3 id="statOrders">0</h3><p>Orders</p></div>
+                </div>
+            </section>
+            <!-- Farmers Management -->
+            <section id="farmers" class="admin-section">
+                <h2>Farmers Management</h2>
+                <table class="admin-table" id="farmersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Certification</th>
+                            <th>Status</th>
+                            <th>Products</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <!-- Products Management -->
+            <section id="products" class="admin-section">
+                <h2>Products Management</h2>
+                <table class="admin-table" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Farmer</th>
+                            <th>Seed Variety</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <!-- Donations -->
+            <section id="donations" class="admin-section">
+                <h2>Donation History</h2>
+                <table class="admin-table" id="donationsTable">
+                    <thead>
+                        <tr>
+                            <th>Donor</th>
+                            <th>Email</th>
+                            <th>Amount</th>
+                            <th>Farmer</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <!-- Orders -->
+            <section id="orders" class="admin-section">
+                <h2>Orders</h2>
+                <table class="admin-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Buyer</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+    // Admin panel logic
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navigation
+        const links = document.querySelectorAll('.admin-link');
+        const sections = document.querySelectorAll('.admin-section');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                links.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const id = this.getAttribute('href').replace('#','');
+                sections.forEach(sec => sec.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+            });
+        });
+        // Data
+        let farmers = [];
+        try { farmers = JSON.parse(localStorage.getItem('farmers')) || []; } catch (e) { farmers = []; }
+        let donations = [];
+        try { donations = JSON.parse(localStorage.getItem('donations')) || []; } catch (e) { donations = []; }
+        let orders = [];
+        try { orders = JSON.parse(localStorage.getItem('orders')) || []; } catch (e) { orders = []; }
+        // Stats
+        document.getElementById('statFarmers').textContent = farmers.length;
+        let productCount = 0;
+        farmers.forEach(f => {
+            if (f.products && f.products.length) productCount += f.products.length;
+            else if (f.crops && f.crops.length) productCount += f.crops.length;
+        });
+        document.getElementById('statProducts').textContent = productCount;
+        document.getElementById('statDonations').textContent = donations.length;
+        document.getElementById('statOrders').textContent = orders.length;
+        // Farmers Table
+        const farmersTable = document.getElementById('farmersTable').querySelector('tbody');
+        function renderFarmers() {
+            farmersTable.innerHTML = '';
+            farmers.forEach((f, idx) => {
+                let cert = f.certificationLevel === '1' ? 'Level 1' : f.certificationLevel === '2' ? 'Level 2' : f.certificationLevel === '3' ? 'Level 3' : 'N/A';
+                let status = f.status || 'Pending';
+                let prodCount = (f.products && f.products.length) ? f.products.length : (f.crops && f.crops.length) ? f.crops.length : 0;
+                farmersTable.innerHTML += `
+                    <tr>
+                        <td>${f.name}</td>
+                        <td>${f.phone}</td>
+                        <td>${cert}</td>
+                        <td>${status}</td>
+                        <td>${prodCount}</td>
+                        <td class="admin-actions">
+                            <button class="btn-approve" data-action="approve" data-idx="${idx}">Approve</button>
+                            <button class="btn-reject" data-action="reject" data-idx="${idx}">Reject</button>
+                            <button class="btn-edit" data-action="edit" data-idx="${idx}">Edit</button>
+                            <button class="btn-delete" data-action="delete" data-idx="${idx}">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        renderFarmers();
+        farmersTable.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                const idx = e.target.getAttribute('data-idx');
+                const action = e.target.getAttribute('data-action');
+                if (action === 'approve') {
+                    farmers[idx].status = 'Approved';
+                    localStorage.setItem('farmers', JSON.stringify(farmers));
+                    renderFarmers();
+                    showNotification('Farmer approved!', 'success');
+                } else if (action === 'reject') {
+                    farmers[idx].status = 'Rejected';
+                    localStorage.setItem('farmers', JSON.stringify(farmers));
+                    renderFarmers();
+                    showNotification('Farmer rejected.', 'error');
+                } else if (action === 'delete') {
+                    if (confirm('Delete this farmer?')) {
+                        farmers.splice(idx, 1);
+                        localStorage.setItem('farmers', JSON.stringify(farmers));
+                        renderFarmers();
+                        showNotification('Farmer deleted.', 'success');
+                    }
+                } else if (action === 'edit') {
+                    alert('Edit functionality coming soon!');
+                }
+            }
+        });
+        // Products Table
+        const productsTable = document.getElementById('productsTable').querySelector('tbody');
+        function renderProducts() {
+            productsTable.innerHTML = '';
+            farmers.forEach((f, fidx) => {
+                let items = (f.products && f.products.length) ? f.products : (f.crops || []);
+                items.forEach((p, pidx) => {
+                    productsTable.innerHTML += `
+                        <tr>
+                            <td>${p.name || p.cropType || 'Product'}</td>
+                            <td>${f.name}</td>
+                            <td>${p.seedVariety || ''}</td>
+                            <td>₹${p.price || '100'}</td>
+                            <td class="admin-actions">
+                                <button class="btn-edit" data-action="edit" data-farmer="${fidx}" data-prod="${pidx}">Edit</button>
+                                <button class="btn-delete" data-action="delete" data-farmer="${fidx}" data-prod="${pidx}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+        renderProducts();
+        productsTable.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                const fidx = e.target.getAttribute('data-farmer');
+                const pidx = e.target.getAttribute('data-prod');
+                const action = e.target.getAttribute('data-action');
+                if (action === 'delete') {
+                    if (confirm('Delete this product?')) {
+                        let items = (farmers[fidx].products && farmers[fidx].products.length) ? farmers[fidx].products : farmers[fidx].crops;
+                        items.splice(pidx, 1);
+                        localStorage.setItem('farmers', JSON.stringify(farmers));
+                        renderProducts();
+                        showNotification('Product deleted.', 'success');
+                    }
+                } else if (action === 'edit') {
+                    alert('Edit product functionality coming soon!');
+                }
+            }
+        });
+        // Donations Table (simulate if empty)
+        const donationsTable = document.getElementById('donationsTable').querySelector('tbody');
+        function renderDonations() {
+            donationsTable.innerHTML = '';
+            if (!donations.length) {
+                donationsTable.innerHTML = '<tr><td colspan="5">No donations found.</td></tr>';
+                return;
+            }
+            donations.forEach(d => {
+                donationsTable.innerHTML += `
+                    <tr>
+                        <td>${d.donorName || 'Anonymous'}</td>
+                        <td>${d.donorEmail || ''}</td>
+                        <td>₹${d.amount}</td>
+                        <td>${d.farmerName || 'General'}</td>
+                        <td>${d.date || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+        renderDonations();
+        // Orders Table (simulate if empty)
+        const ordersTable = document.getElementById('ordersTable').querySelector('tbody');
+        function renderOrders() {
+            ordersTable.innerHTML = '';
+            if (!orders.length) {
+                ordersTable.innerHTML = '<tr><td colspan="6">No orders found.</td></tr>';
+                return;
+            }
+            orders.forEach(o => {
+                ordersTable.innerHTML += `
+                    <tr>
+                        <td>${o.buyerName}</td>
+                        <td>${o.buyerEmail}</td>
+                        <td>${o.buyerAddress}</td>
+                        <td>${o.items ? o.items.map(i => i.name + ' x' + i.qty).join('<br>') : ''}</td>
+                        <td>₹${o.total}</td>
+                        <td>${o.date || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+        renderOrders();
+    });
+    </script>
+</body>
+</html> 

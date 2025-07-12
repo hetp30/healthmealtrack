@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart & Checkout | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="products" style="padding-top:120px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Your Cart</h2>
+                <p class="section-subtitle">Review your items and checkout</p>
+            </div>
+            <div id="cartGrid" class="products-grid" style="margin-bottom:2rem;"></div>
+            <div id="cartTotal" style="font-size:1.2rem; font-weight:600; margin-bottom:2rem;"></div>
+            <div id="checkoutSection" style="max-width:400px; margin:auto;"></div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+    <script>
+    // Cart and checkout logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartGrid = document.getElementById('cartGrid');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutSection = document.getElementById('checkoutSection');
+        let farmers = [];
+        try { farmers = JSON.parse(localStorage.getItem('farmers')) || []; } catch (e) { farmers = []; }
+        function getProduct(farmerIdx, prodIdx) {
+            const farmer = farmers[farmerIdx];
+            if (!farmer) return null;
+            const items = (farmer.products && farmer.products.length) ? farmer.products : (farmer.crops || []);
+            return { farmer, product: items[prodIdx] };
+        }
+        function renderCart() {
+            let cart = [];
+            try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (e) { cart = []; }
+            cartGrid.innerHTML = '';
+            let total = 0;
+            if (!cart.length) {
+                cartGrid.innerHTML = '<p>Your cart is empty.</p>';
+                cartTotal.textContent = '';
+                checkoutSection.innerHTML = '';
+                return;
+            }
+            cart.forEach((item, idx) => {
+                const { farmer, product } = getProduct(item.farmerIdx, item.prodIdx) || {};
+                if (!farmer || !product) return;
+                const price = parseFloat(product.price || 0);
+                const subtotal = price * item.qty;
+                total += subtotal;
+                cartGrid.innerHTML += `
+                    <div class="product-card" style="flex-direction:row;align-items:center;gap:1rem;">
+                        <div class="product-image"><img src="${product.image || 'https://via.placeholder.com/80x80?text=Product'}" alt="${product.name || product.cropType}" style="width:60px;height:60px;border-radius:8px;"></div>
+                        <div style="flex:1;">
+                            <strong>${product.name || product.cropType}</strong><br>
+                            <span style="font-size:0.95em;">by ${farmer.name}</span><br>
+                            <span>₹${price} x </span>
+                            <input type="number" min="1" value="${item.qty}" data-idx="${idx}" class="cart-qty-input" style="width:50px;">
+                            <span>= ₹${subtotal}</span>
+                        </div>
+                        <button class="btn btn-secondary remove-cart-btn" data-idx="${idx}">Remove</button>
+                    </div>
+                `;
+            });
+            cartTotal.textContent = 'Total: ₹' + total;
+            checkoutSection.innerHTML = `
+                <h3>Checkout</h3>
+                <form id="checkoutForm">
+                    <input type="text" name="buyerName" placeholder="Your Name" required style="margin-bottom:0.5rem;">
+                    <input type="email" name="buyerEmail" placeholder="Your Email" required style="margin-bottom:0.5rem;">
+                    <input type="text" name="buyerAddress" placeholder="Delivery Address" required style="margin-bottom:0.5rem;">
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </form>
+            `;
+        }
+        renderCart();
+        cartGrid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-cart-btn')) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+                cart.splice(idx, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                showNotification('Item removed from cart.', 'success');
+            }
+        });
+        cartGrid.addEventListener('input', function(e) {
+            if (e.target.classList.contains('cart-qty-input')) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+                let qty = parseInt(e.target.value, 10);
+                if (isNaN(qty) || qty < 1) qty = 1;
+                cart[idx].qty = qty;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+            }
+        });
+        checkoutSection.addEventListener('submit', function(e) {
+            if (e.target.id === 'checkoutForm') {
+                e.preventDefault();
+                localStorage.removeItem('cart');
+                renderCart();
+                checkoutSection.innerHTML = '<h3>Thank you for your order!</h3><p>Your order has been placed successfully.</p>';
+                showNotification('Order placed! Thank you for shopping with us.', 'success');
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

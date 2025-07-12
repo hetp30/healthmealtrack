@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="certification" style="padding-top:120px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Farmer Registration & Certification</h2>
+                <p class="section-subtitle">Register to get certified and join the KissanVarg platform</p>
+            </div>
+            <div class="certification-form">
+                <form id="registrationForm" enctype="multipart/form-data" autocomplete="off">
+                    <div class="form-group">
+                        <label for="farmerName">Full Name *</label>
+                        <input type="text" id="farmerName" name="farmerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number *</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" pattern="[0-9]{10}" maxlength="10" required placeholder="10-digit mobile number">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address *</label>
+                        <textarea id="address" name="address" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="certificationLevel">Certification Level *</label>
+                        <select id="certificationLevel" name="certificationLevel" required>
+                            <option value="">Select Level</option>
+                            <option value="1">Level 1 - In Conversion Organic</option>
+                            <option value="2">Level 2 - Certified Organic</option>
+                            <option value="3">Level 3 - PGS Certified Natural Farmer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="certificateUpload">Upload Government Certificate (PDF/JPG/PNG) *</label>
+                        <input type="file" id="certificateUpload" name="certificateUpload" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Farming Methods *</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="farmingMethods" value="irrigation"> Irrigation</label>
+                            <label><input type="checkbox" name="farmingMethods" value="soil"> Soil Preparation</label>
+                            <label><input type="checkbox" name="farmingMethods" value="fertilization"> Fertilization</label>
+                            <label><input type="checkbox" name="farmingMethods" value="pest"> Pest Control</label>
+                        </div>
+                    </div>
+                    <div class="form-group" id="cropsSection">
+                        <label>Crops *</label>
+                        <div id="cropsContainer">
+                            <div class="crop-entry">
+                                <input type="text" name="cropType[]" placeholder="Crop Type (e.g., Wheat)" required>
+                                <input type="text" name="seedVariety[]" placeholder="Seed Variety (e.g., Heirloom)" required>
+                                <input type="text" name="seedSource[]" placeholder="Seed Source (e.g., Own Saved)" required>
+                                <input type="date" name="sowingDate[]" placeholder="Sowing Date" required>
+                                <input type="date" name="harvestDate[]" placeholder="Harvest Date" required>
+                                <button type="button" class="remove-crop-btn" style="display:none">Remove</button>
+                            </div>
+                        </div>
+                        <button type="button" id="addCropBtn" class="btn btn-secondary">Add Crop</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Harvest/Post-harvest Methods *</label>
+                        <input type="text" name="harvestMethod" placeholder="Harvesting Method" required>
+                        <input type="text" name="storage" placeholder="Storage Conditions" required>
+                        <input type="text" name="packaging" placeholder="Packaging Details" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Farmer Bio/Story *</label>
+                        <textarea id="bio" name="bio" required placeholder="Share your farming journey, philosophy, or story..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileImages">Upload Images (JPG/PNG, up to 3)</label>
+                        <input type="file" id="profileImages" name="profileImages" accept=".jpg,.jpeg,.png" multiple max="3">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit & Create Profile</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html> 

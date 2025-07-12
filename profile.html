@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Profile | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- QRCode.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="certification" style="padding-top:120px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Farmer Profile</h2>
+                <p class="section-subtitle">View your certification and farming details</p>
+            </div>
+            <div id="profileContent" class="certification-form">
+                <!-- Profile data will be rendered here by JS -->
+            </div>
+            <div id="myProductsSection" class="certification-form" style="margin-top:2rem;">
+                <h3>My Products</h3>
+                <form id="addProductForm" style="margin-bottom:1.5rem;">
+                    <input type="text" name="productName" placeholder="Product Name" required style="margin-bottom:0.5rem;">
+                    <input type="number" name="productPrice" placeholder="Price (₹)" min="1" required style="margin-bottom:0.5rem;">
+                    <input type="file" name="productImage" accept=".jpg,.jpeg,.png" style="margin-bottom:0.5rem;">
+                    <input type="text" name="productDesc" placeholder="Description" required style="margin-bottom:0.5rem;">
+                    <button type="submit" class="btn btn-primary" id="productFormBtn">Add Product</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none; margin-left:0.5rem;">Cancel</button>
+                </form>
+                <div id="myProductsList"></div>
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+    <script>
+    // Profile rendering logic (multi-farmer) + Product management + Editing
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileContent = document.getElementById('profileContent');
+        let farmers = [];
+        let idx = 0;
+        try {
+            farmers = JSON.parse(localStorage.getItem('farmers')) || [];
+            idx = parseInt(localStorage.getItem('currentFarmerIndex') || '0', 10);
+        } catch (e) { farmers = []; idx = 0; }
+        const data = farmers[idx];
+        if (!data || !data.name) {
+            profileContent.innerHTML = '<p>No profile found. Please <a href="register.html">register</a> first.</p>';
+            return;
+        }
+        // Certification badge
+        let badge = '';
+        if (data.certificationLevel === '1') badge = '<span class="certification-badge level-1">Level 1</span>';
+        if (data.certificationLevel === '2') badge = '<span class="certification-badge level-2">Level 2</span>';
+        if (data.certificationLevel === '3') badge = '<span class="certification-badge level-3">Level 3</span>';
+        // Certificate info
+        let certInfo = data.certificate ? `<div><strong>Certificate:</strong> ${data.certificate.name} (${data.certificate.type})</div>` : '';
+        // Farming methods
+        let methods = data.farmingMethods && data.farmingMethods.length ? data.farmingMethods.map(m => `<span class="feature">${m}</span>`).join(' ') : '';
+        // Crops
+        let crops = data.crops && data.crops.length ? data.crops.map(crop => `
+            <div class="crop-entry">
+                <strong>Type:</strong> ${crop.cropType} | <strong>Variety:</strong> ${crop.seedVariety} | <strong>Source:</strong> ${crop.seedSource}<br>
+                <strong>Sowing:</strong> ${crop.sowingDate} | <strong>Harvest:</strong> ${crop.harvestDate}
+            </div>
+        `).join('') : '';
+        // Images
+        let images = data.images && data.images.length ? data.images.map(img => `<img src="${img.data}" alt="Farmer Image" style="max-width:120px; margin:5px; border-radius:10px;">`).join('') : '';
+        // QR code placeholder
+        let qrCode = '<canvas id="profileQR" style="margin:20px 0;"></canvas>';
+        // Products placeholder (for future management)
+        let products = '<div><strong>Products Offered:</strong> <em>(Coming soon)</em></div>';
+        // Render profile
+        profileContent.innerHTML = `
+            <div style="display:flex;align-items:center;gap:1rem;">
+                <h3 style="margin:0;">${data.name}</h3> ${badge}
+            </div>
+            <div><strong>Contact:</strong> ${data.phone}</div>
+            <div><strong>Address:</strong> ${data.address}</div>
+            <div><strong>Certification Level:</strong> ${data.certificationLevel}</div>
+            ${certInfo}
+            <div style="margin:10px 0;"><strong>Farming Methods:</strong> ${methods}</div>
+            <div style="margin:10px 0;"><strong>Crops:</strong> ${crops}</div>
+            <div style="margin:10px 0;"><strong>Harvest/Post-harvest:</strong> ${data.harvestMethod}, ${data.storage}, ${data.packaging}</div>
+            <div style="margin:10px 0;"><strong>Bio/Story:</strong> <br>${data.bio}</div>
+            <div style="margin:10px 0;"><strong>Images:</strong><br>${images}</div>
+            ${qrCode}
+            ${products}
+        `;
+        // Generate QR code for this profile page
+        const qr = new QRious({
+            element: document.getElementById('profileQR'),
+            value: window.location.href,
+            size: 150
+        });
+
+        // Product management
+        let farmer = farmers[idx];
+        const myProductsList = document.getElementById('myProductsList');
+        const addProductForm = document.getElementById('addProductForm');
+        const productFormBtn = document.getElementById('productFormBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        let editIndex = null;
+        function renderMyProducts() {
+            myProductsList.innerHTML = '';
+            if (!farmer.products || !farmer.products.length) {
+                myProductsList.innerHTML = '<p>No products added yet.</p>';
+                return;
+            }
+            farmer.products.forEach((prod, pidx) => {
+                myProductsList.innerHTML += `
+                    <div class="product-card" style="margin-bottom:1rem;">
+                        <div class="product-image"><img src="${prod.image || 'https://via.placeholder.com/80x80?text=Product'}" alt="${prod.name}" style="width:60px;height:60px;border-radius:8px;"></div>
+                        <strong>${prod.name}</strong> - ₹${prod.price}<br>
+                        <span style="font-size:0.95em;">${prod.description}</span><br>
+                        <button class="btn btn-secondary edit-product-btn" data-pidx="${pidx}" style="margin-top:0.5rem;">Edit</button>
+                        <button class="btn btn-secondary delete-product-btn" data-pidx="${pidx}" style="margin-top:0.5rem; margin-left:0.5rem;">Delete</button>
+                    </div>
+                `;
+            });
+        }
+        renderMyProducts();
+        if (addProductForm) {
+            addProductForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = addProductForm.productName.value.trim();
+                const price = addProductForm.productPrice.value;
+                const desc = addProductForm.productDesc.value.trim();
+                const imgFile = addProductForm.productImage.files[0];
+                if (!name || !price || !desc) {
+                    showNotification('Please fill all product fields.', 'error');
+                    return;
+                }
+                if (editIndex !== null) {
+                    // Edit mode
+                    function updateProduct(imageData) {
+                        const prod = farmer.products[editIndex];
+                        prod.name = name;
+                        prod.price = price;
+                        prod.description = desc;
+                        if (imageData) prod.image = imageData;
+                        farmers[idx] = farmer;
+                        localStorage.setItem('farmers', JSON.stringify(farmers));
+                        renderMyProducts();
+                        addProductForm.reset();
+                        productFormBtn.textContent = 'Add Product';
+                        cancelEditBtn.style.display = 'none';
+                        editIndex = null;
+                        showNotification('Product updated!', 'success');
+                    }
+                    if (imgFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) { updateProduct(ev.target.result); };
+                        reader.readAsDataURL(imgFile);
+                    } else {
+                        updateProduct();
+                    }
+                } else {
+                    // Add mode
+                    if (imgFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) {
+                            addProductToFarmer({ name, price, description: desc, image: ev.target.result });
+                        };
+                        reader.readAsDataURL(imgFile);
+                    } else {
+                        addProductToFarmer({ name, price, description: desc });
+                    }
+                }
+            });
+        }
+        function addProductToFarmer(product) {
+            if (!farmer.products) farmer.products = [];
+            farmer.products.push(product);
+            farmers[idx] = farmer;
+            localStorage.setItem('farmers', JSON.stringify(farmers));
+            renderMyProducts();
+            addProductForm.reset();
+            showNotification('Product added!', 'success');
+        }
+        myProductsList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-product-btn')) {
+                const pidx = parseInt(e.target.getAttribute('data-pidx'), 10);
+                farmer.products.splice(pidx, 1);
+                farmers[idx] = farmer;
+                localStorage.setItem('farmers', JSON.stringify(farmers));
+                renderMyProducts();
+                showNotification('Product deleted.', 'success');
+                if (editIndex === pidx) {
+                    addProductForm.reset();
+                    productFormBtn.textContent = 'Add Product';
+                    cancelEditBtn.style.display = 'none';
+                    editIndex = null;
+                }
+            }
+            if (e.target.classList.contains('edit-product-btn')) {
+                const pidx = parseInt(e.target.getAttribute('data-pidx'), 10);
+                const prod = farmer.products[pidx];
+                addProductForm.productName.value = prod.name;
+                addProductForm.productPrice.value = prod.price;
+                addProductForm.productDesc.value = prod.description;
+                // Don't set image input for security reasons
+                productFormBtn.textContent = 'Update Product';
+                cancelEditBtn.style.display = 'inline-block';
+                editIndex = pidx;
+            }
+        });
+        cancelEditBtn.addEventListener('click', function() {
+            addProductForm.reset();
+            productFormBtn.textContent = 'Add Product';
+            cancelEditBtn.style.display = 'none';
+            editIndex = null;
+        });
+    });
+    </script>
+</body>
+</html> 

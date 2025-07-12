@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace | KissanVarg</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="products" style="padding-top:120px;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Marketplace</h2>
+                <p class="section-subtitle">Browse and buy products directly from certified farmers</p>
+            </div>
+            <div class="marketplace-filters" style="margin-bottom:2rem;">
+                <input type="text" id="searchInput" placeholder="Search by crop, farmer, or certification..." style="padding:0.8rem; width:250px; border-radius:8px; border:1px solid #ccc;">
+            </div>
+            <div id="marketplaceGrid" class="products-grid">
+                <!-- Product cards will be rendered here by JS -->
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+    <script>
+    // Marketplace rendering logic (multi-farmer) + Add to Cart
+    document.addEventListener('DOMContentLoaded', function() {
+        const grid = document.getElementById('marketplaceGrid');
+        const searchInput = document.getElementById('searchInput');
+        let farmers = [];
+        try {
+            farmers = JSON.parse(localStorage.getItem('farmers')) || [];
+        } catch (e) { farmers = []; }
+        function getCertBadge(level) {
+            if (level === '1') return '<span class="certification-badge level-1">Level 1</span>';
+            if (level === '2') return '<span class="certification-badge level-2">Level 2</span>';
+            if (level === '3') return '<span class="certification-badge level-3">Level 3</span>';
+            return '';
+        }
+        function renderProducts(filter = '') {
+            grid.innerHTML = '';
+            let found = false;
+            farmers.forEach((farmer, fidx) => {
+                // Use products array if available, else fallback to crops
+                let items = (farmer.products && farmer.products.length) ? farmer.products : (farmer.crops || []);
+                items.forEach((item, idx) => {
+                    // Product/crop info
+                    const name = item.name || item.cropType || 'Product';
+                    const cert = farmer.certificationLevel;
+                    const farmerName = farmer.name;
+                    const img = (item.image) ? item.image : (farmer.images && farmer.images[0]) ? farmer.images[0].data : 'https://via.placeholder.com/120x120?text=Crop';
+                    const price = item.price ? item.price : (100 + idx * 20).toFixed(0); // Mock price if not set
+                    const desc = item.description || '';
+                    // Filter logic
+                    if (filter && !(
+                        name.toLowerCase().includes(filter) ||
+                        farmerName.toLowerCase().includes(filter) ||
+                        cert.toLowerCase().includes(filter)
+                    )) return;
+                    found = true;
+                    grid.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-image"><img src="${img}" alt="${name}" style="width:80px;height:80px;border-radius:10px;"></div>
+                        <h3>${name}</h3>
+                        <p><strong>Farmer:</strong> ${farmerName}</p>
+                        <p><strong>Seed:</strong> ${item.seedVariety || ''}</p>
+                        <p><strong>Price:</strong> ₹${price} / unit</p>
+                        <div class="product-features">
+                            ${getCertBadge(cert)}
+                        </div>
+                        <button class="btn btn-secondary view-farmer-btn" data-farmer="${fidx}" style="margin-top:1rem;">View Farmer</button>
+                        <button class="btn btn-primary add-to-cart-btn" data-farmer="${fidx}" data-prod="${idx}" style="margin-top:0.5rem;">Add to Cart</button>
+                    </div>
+                    `;
+                });
+            });
+            if (!found) {
+                grid.innerHTML = '<p>No products found. Please register as a farmer and add products/crops.</p>';
+            }
+        }
+        renderProducts();
+        searchInput.addEventListener('input', function() {
+            renderProducts(this.value.trim().toLowerCase());
+        });
+        // Set currentFarmerIndex on View Farmer
+        grid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('view-farmer-btn')) {
+                const idx = e.target.getAttribute('data-farmer');
+                localStorage.setItem('currentFarmerIndex', idx);
+                window.location.href = 'profile.html';
+            }
+            if (e.target.classList.contains('add-to-cart-btn')) {
+                const farmerIdx = e.target.getAttribute('data-farmer');
+                const prodIdx = e.target.getAttribute('data-prod');
+                let cart = [];
+                try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (e) { cart = []; }
+                // Check if already in cart (same farmer/product)
+                const existing = cart.find(item => item.farmerIdx == farmerIdx && item.prodIdx == prodIdx);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({ farmerIdx, prodIdx, qty: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showNotification('Added to cart!', 'success');
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

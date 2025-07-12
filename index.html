@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KissanVarg - Organic Farming Excellence</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-seedling"></i>
+                <span>KissanVarg</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+                <li class="nav-item"><a href="marketplace.html" class="nav-link">Marketplace</a></li>
+                <li class="nav-item"><a href="donate.html" class="nav-link">Donate</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link">Certification</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+                <li class="nav-item"><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> View Cart</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">Traditional</span>
+                    <span class="title-line">Organic Farming</span>
+                </h1>
+                <p class="hero-subtitle">Nurturing the earth, feeding the future with sustainable and traditional farming practices</p>
+                <div class="hero-buttons">
+                    <a href="marketplace.html" class="btn btn-primary">Shop Now</a>
+                    <a href="register.html" class="btn btn-secondary">Become a Farmer</a>
+                    <a href="cart.html" class="btn btn-secondary"><i class="fas fa-shopping-cart"></i> View Cart</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-elements">
+                    <div class="floating-item" data-speed="2">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="floating-item" data-speed="1.5">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="floating-item" data-speed="2.5">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="featured-products" class="products" style="background:#faf8f3;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Products</h2>
+                <p class="section-subtitle">Shop directly from certified farmers</p>
+            </div>
+            <div id="featuredProductsGrid" class="products-grid"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Story</h2>
+                <p class="section-subtitle">Generations of wisdom passed down through traditional farming practices</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Rooted in Tradition</h3>
+                    <p>For over three generations, our family has been practicing organic farming using time-honored techniques that respect both the land and the environment. We believe in the harmony between traditional wisdom and modern sustainability.</p>
+                    
+                    <h3>Our Philosophy</h3>
+                    <p>We follow the principle of "Vasudhaiva Kutumbakam" - the world is one family. Our farming methods ensure that we give back to the earth what we take, creating a sustainable cycle of growth and nourishment.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="50">0</span>
+                            <span class="stat-label">Years of Experience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="100">0</span>
+                            <span class="stat-label">Acres of Land</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" data-target="25">0</span>
+                            <span class="stat-label">Crop Varieties</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-container">
+                        <div class="image-overlay"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Organic Products</h2>
+                <p class="section-subtitle">Fresh from our fields to your table</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-wheat-awn"></i>
+                    </div>
+                    <h3>Organic Grains</h3>
+                    <p>Traditional varieties of wheat, rice, and millets grown without chemical fertilizers</p>
+                    <div class="product-features">
+                        <span class="feature">100% Organic</span>
+                        <span class="feature">Traditional Seeds</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-carrot"></i>
+                    </div>
+                    <h3>Fresh Vegetables</h3>
+                    <p>Seasonal vegetables grown using natural farming methods and companion planting</p>
+                    <div class="product-features">
+                        <span class="feature">Seasonal</span>
+                        <span class="feature">Pesticide Free</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>Organic Fruits</h3>
+                    <p>Sweet and nutritious fruits from our orchards, nurtured with care and patience</p>
+                    <div class="product-features">
+                        <span class="feature">Tree Ripened</span>
+                        <span class="feature">Natural Sweetness</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Herbs & Spices</h3>
+                    <p>Aromatic herbs and spices that add flavor and health benefits to your meals</p>
+                    <div class="product-features">
+                        <span class="feature">Medicinal</span>
+                        <span class="feature">Aromatic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methods Section -->
+    <section id="methods" class="methods">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Traditional Farming Methods</h2>
+                <p class="section-subtitle">Ancient wisdom meets modern sustainability</p>
+            </div>
+            <div class="methods-timeline">
+                <div class="method-item">
+                    <div class="method-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="method-content">
+                        <h3>Lunar Farming</h3>
+                        <p>We follow the lunar calendar for planting and harvesting, respecting the natural rhythms of nature.</p>
+                    </div>
+                </div>
+                <div class="method-item">
+                    <div class="method-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <div class="method-content">
+                        <h3>Natural Pest Control</h3>
+                        <p>Using beneficial insects, companion planting, and natural repellents to protect our crops.</p>
+                    </div>
+                </div>
+                <div class="method-item">
+                    <div class="method-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <div class="method-content">
+                        <h3>Crop Rotation</h3>
+                        <p>Maintaining soil health through traditional crop rotation and green manure techniques.</p>
+                    </div>
+                </div>
+                <div class="method-item">
+                    <div class="method-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="method-content">
+                        <h3>Water Conservation</h3>
+                        <p>Implementing traditional water harvesting and drip irrigation methods.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farmers Section -->
+    <section id="farmers" class="farmers">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Certified Farmers</h2>
+                <p class="section-subtitle">Meet the dedicated farmers behind our organic produce</p>
+            </div>
+            <div class="farmers-grid">
+                <div class="farmer-card">
+                    <div class="farmer-image">
+                        <i class="fas fa-user-farmer"></i>
+                        <div class="certification-badge level-3">PGS Certified</div>
+                    </div>
+                    <div class="farmer-info">
+                        <h3>Rajesh Kumar</h3>
+                        <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> Punjab, India</p>
+                        <p class="farmer-specialty">Specializes in Wheat & Rice</p>
+                        <div class="farmer-stats">
+                            <span><i class="fas fa-seedling"></i> 15 Acres</span>
+                            <span><i class="fas fa-star"></i> 4.8 Rating</span>
+                        </div>
+                        <button class="btn btn-primary view-profile">View Profile</button>
+                    </div>
+                </div>
+                <div class="farmer-card">
+                    <div class="farmer-image">
+                        <i class="fas fa-user-farmer"></i>
+                        <div class="certification-badge level-2">Certified Organic</div>
+                    </div>
+                    <div class="farmer-info">
+                        <h3>Priya Sharma</h3>
+                        <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> Maharashtra, India</p>
+                        <p class="farmer-specialty">Specializes in Vegetables</p>
+                        <div class="farmer-stats">
+                            <span><i class="fas fa-seedling"></i> 8 Acres</span>
+                            <span><i class="fas fa-star"></i> 4.9 Rating</span>
+                        </div>
+                        <button class="btn btn-primary view-profile">View Profile</button>
+                    </div>
+                </div>
+                <div class="farmer-card">
+                    <div class="farmer-image">
+                        <i class="fas fa-user-farmer"></i>
+                        <div class="certification-badge level-1">In Conversion</div>
+                    </div>
+                    <div class="farmer-info">
+                        <h3>Amir Khan</h3>
+                        <p class="farmer-location"><i class="fas fa-map-marker-alt"></i> Karnataka, India</p>
+                        <p class="farmer-specialty">Specializes in Fruits</p>
+                        <div class="farmer-stats">
+                            <span><i class="fas fa-seedling"></i> 12 Acres</span>
+                            <span><i class="fas fa-star"></i> 4.7 Rating</span>
+                        </div>
+                        <button class="btn btn-primary view-profile">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Community Section -->
+    <section id="community" class="community">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Community Engagement</h2>
+                <p class="section-subtitle">Direct farmer-consumer connection for trust and fair pricing</p>
+            </div>
+            <div class="community-content">
+                <div class="community-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Direct Messaging</h3>
+                        <p>Connect directly with farmers to ask questions about their practices and products</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Pre-Ordering</h3>
+                        <p>Pre-order fresh produce directly from farmers with guaranteed delivery</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3>Farmer Stories</h3>
+                        <p>Read inspiring stories from our farmers about their journey and practices</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Transparency</h3>
+                        <p>Complete traceability from seed to harvest with detailed farming records</p>
+                    </div>
+                </div>
+                <div class="traceability-demo">
+                    <h3>QR Code Traceability Demo</h3>
+                    <div class="qr-demo">
+                        <div class="qr-code">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="trace-info">
+                            <h4>Scan to View Details</h4>
+                            <ul>
+                                <li><i class="fas fa-user"></i> Farmer: Rajesh Kumar</li>
+                                <li><i class="fas fa-seedling"></i> Crop: Organic Wheat</li>
+                                <li><i class="fas fa-calendar"></i> Harvest Date: Dec 2024</li>
+                                <li><i class="fas fa-map-marker-alt"></i> Location: Punjab, India</li>
+                                <li><i class="fas fa-certificate"></i> Certification: PGS Level 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section id="donate" class="donate">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Support Our Farmers</h2>
+                <p class="section-subtitle">Help farmers recover from natural calamities and continue sustainable farming</p>
+            </div>
+            <div class="donation-content">
+                <div class="donation-stories">
+                    <h3>Recent Calamities</h3>
+                    <div class="story-cards">
+                        <div class="story-card">
+                            <div class="story-image">
+                                <i class="fas fa-cloud-rain"></i>
+                            </div>
+                            <div class="story-content">
+                                <h4>Flood Damage - Maharashtra</h4>
+                                <p>Heavy rains destroyed crops of 50+ farmers in Maharashtra region</p>
+                                <div class="donation-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                    <span>₹7.5L raised of ₹10L goal</span>
+                                </div>
+                                <button class="btn btn-primary">Donate Now</button>
+                            </div>
+                        </div>
+                        <div class="story-card">
+                            <div class="story-image">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <div class="story-content">
+                                <h4>Cyclone Impact - Odisha</h4>
+                                <p>Cyclone damage affected 30+ organic farmers in coastal areas</p>
+                                <div class="donation-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                    <span>₹4.5L raised of ₹10L goal</span>
+                                </div>
+                                <button class="btn btn-primary">Donate Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="donation-form">
+                    <h3>Make a Donation</h3>
+                    <form id="donationForm">
+                        <div class="form-group">
+                            <label for="donorName">Your Name *</label>
+                            <input type="text" id="donorName" name="donorName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donorEmail">Email *</label>
+                            <input type="email" id="donorEmail" name="donorEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationAmount">Donation Amount (₹) *</label>
+                            <input type="number" id="donationAmount" name="donationAmount" min="100" step="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donationCause">Select Cause</label>
+                            <select id="donationCause" name="donationCause">
+                                <option value="general">General Farmer Support</option>
+                                <option value="flood_maharashtra">Flood Relief - Maharashtra</option>
+                                <option value="cyclone_odisha">Cyclone Relief - Odisha</option>
+                                <option value="drought_karnataka">Drought Relief - Karnataka</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="donorMessage">Message (Optional)</label>
+                            <textarea id="donorMessage" name="donorMessage" placeholder="Leave a message of support for our farmers"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Donate Securely</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Farm Gallery</h2>
+                <p class="section-subtitle">A visual journey through our organic paradise</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="fields">
+                    <div class="gallery-image">
+                        <i class="fas fa-wheat-awn"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Golden Fields</h3>
+                        <p>Our wheat fields during harvest season</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="vegetables">
+                    <div class="gallery-image">
+                        <i class="fas fa-carrot"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Fresh Harvest</h3>
+                        <p>Daily harvest of organic vegetables</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="fruits">
+                    <div class="gallery-image">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Orchard Beauty</h3>
+                        <p>Our fruit orchards in full bloom</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="herbs">
+                    <div class="gallery-image">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Herb Garden</h3>
+                        <p>Aromatic herbs and medicinal plants</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="workers">
+                    <div class="gallery-image">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Our Team</h3>
+                        <p>Dedicated farmers and workers</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="equipment">
+                    <div class="gallery-image">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <div class="gallery-overlay">
+                        <h3>Traditional Tools</h3>
+                        <p>Using age-old farming equipment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-subtitle">Connect with us to learn more about organic farming</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Visit Our Farm</h3>
+                            <p>Village Road, Organic Valley<br>District, State - 123456</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Call Us</h3>
+                            <p>+91 98765 43210<br>+91 98765 43211</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email Us</h3>
+                            <p>info@kissanvarg.com<br>orders@kissanvarg.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-seedling"></i>
+                        <span>KissanVarg</span>
+                    </div>
+                    <p>Nurturing the earth with traditional wisdom and modern sustainability practices.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#farmers">Farmers</a></li>
+                        <li><a href="#certification">Certification</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Our Services</h3>
+                    <ul>
+                        <li><a href="register.html">Digital Certification</a></li>
+                        <li><a href="#community">Community Engagement</a></li>
+                        <li><a href="donate.html">Farmer Support</a></li>
+                        <li><a href="#gallery">Traceability</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for farming tips and updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KissanVarg. All rights reserved. | Made with <i class="fas fa-heart"></i> for organic farming</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+// Featured Products logic for home page
+if (document.getElementById('featuredProductsGrid')) {
+    let farmers = [];
+    try { farmers = JSON.parse(localStorage.getItem('farmers')) || []; } catch (e) { farmers = []; }
+    let products = [];
+    farmers.forEach((farmer, fidx) => {
+        let items = (farmer.products && farmer.products.length) ? farmer.products : (farmer.crops || []);
+        items.forEach((item, pidx) => {
+            products.push({
+                farmerIdx: fidx,
+                prodIdx: pidx,
+                farmerName: farmer.name,
+                cert: farmer.certificationLevel,
+                name: item.name || item.cropType || 'Product',
+                image: item.image || (farmer.images && farmer.images[0] ? farmer.images[0].data : 'https://via.placeholder.com/120x120?text=Product'),
+                price: item.price || '100',
+                seedVariety: item.seedVariety || '',
+            });
+        });
+    });
+    // Shuffle and pick up to 4
+    products = products.sort(() => 0.5 - Math.random()).slice(0, 4);
+    const grid = document.getElementById('featuredProductsGrid');
+    function getCertBadge(level) {
+        if (level === '1') return '<span class="certification-badge level-1">Level 1</span>';
+        if (level === '2') return '<span class="certification-badge level-2">Level 2</span>';
+        if (level === '3') return '<span class="certification-badge level-3">Level 3</span>';
+        return '';
+    }
+    if (!products.length) {
+        grid.innerHTML = '<p>No products available yet. <a href="register.html">Become a farmer</a> or <a href="marketplace.html">visit the marketplace</a>.</p>';
+    } else {
+        products.forEach(prod => {
+            grid.innerHTML += `
+                <div class="product-card">
+                    <div class="product-image"><img src="${prod.image}" alt="${prod.name}" style="width:80px;height:80px;border-radius:10px;"></div>
+                    <h3>${prod.name}</h3>
+                    <p><strong>Farmer:</strong> ${prod.farmerName}</p>
+                    <p><strong>Price:</strong> ₹${prod.price} / unit</p>
+                    <div class="product-features">${getCertBadge(prod.cert)}</div>
+                    <button class="btn btn-secondary view-farmer-btn" data-farmer="${prod.farmerIdx}" style="margin-top:1rem;">View Farmer</button>
+                    <button class="btn btn-primary add-to-cart-btn" data-farmer="${prod.farmerIdx}" data-prod="${prod.prodIdx}" style="margin-top:0.5rem;">Add to Cart</button>
+                </div>
+            `;
+        });
+    }
+    // Add to Cart/View Farmer logic
+    grid.addEventListener('click', function(e) {
+        if (e.target.classList.contains('view-farmer-btn')) {
+            const idx = e.target.getAttribute('data-farmer');
+            localStorage.setItem('currentFarmerIndex', idx);
+            window.location.href = 'profile.html';
+        }
+        if (e.target.classList.contains('add-to-cart-btn')) {
+            const farmerIdx = e.target.getAttribute('data-farmer');
+            const prodIdx = e.target.getAttribute('data-prod');
+            let cart = [];
+            try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch (e) { cart = []; }
+            const existing = cart.find(item => item.farmerIdx == farmerIdx && item.prodIdx == prodIdx);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ farmerIdx, prodIdx, qty: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            if (typeof showNotification === 'function') showNotification('Added to cart!', 'success');
+        }
+    });
+}
+</script>
+</body>
+</html>
