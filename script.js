@@ -1,10 +1,10 @@
 // HealthyMealTrack - Main JavaScript File
 // Handles all functionality for the AI-powered health meal tracking platform
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
-let authToken = localStorage.getItem('authToken');
-let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+// API Configuration (Frontend Demo - No Backend)
+const API_BASE_URL = '#';
+let authToken = null;
+let currentUser = null;
 
 // API Helper Functions
 async function apiRequest(endpoint, options = {}) {
@@ -81,59 +81,67 @@ class HealthyMealTrack {
 
     // Authentication Management
     async checkAuth() {
+        // Demo mode - no real authentication check
         if (!authToken) {
-            this.redirectToLogin();
+            // Skip authentication for demo
             return;
         }
 
+        // Demo mode - skip real API calls
         try {
-            const response = await apiRequest('/auth/me');
-            currentUser = response.user;
-            this.userProfile = response.user;
+            // Simulate user data for demo
+            currentUser = { name: 'Demo User', points: 150, streak: 5 };
+            this.userProfile = currentUser;
             this.updateUIForAuthenticatedUser();
         } catch (error) {
-            console.error('Auth check failed:', error);
-            this.logout();
+            console.error('Demo auth check:', error);
         }
     }
 
     async login(email, password) {
+        // Demo mode - simulate login
         try {
-            const response = await apiRequest('/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ email, password })
-            });
+            // Simulate successful login
+            const demoResponse = {
+                token: 'demo-token',
+                user: { name: 'Demo User', email: email, points: 150, streak: 5 }
+            };
 
-            authToken = response.token;
-            currentUser = response.user;
-            this.userProfile = response.user;
+            authToken = demoResponse.token;
+            currentUser = demoResponse.user;
+            this.userProfile = demoResponse.user;
 
-            localStorage.setItem('authToken', authToken);
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            // localStorage operations removed for demo
 
             this.updateUIForAuthenticatedUser();
-            return response;
+            return demoResponse;
         } catch (error) {
             throw error;
         }
     }
 
     async register(userData) {
+        // Demo mode - simulate registration
         try {
-            const response = await apiRequest('/auth/register', {
-                method: 'POST',
-                body: JSON.stringify(userData)
-            });
+            // Simulate successful registration
+            const demoResponse = {
+                token: 'demo-token',
+                user: { 
+                    name: userData.name || 'Demo User', 
+                    email: userData.email, 
+                    points: 0, 
+                    streak: 0 
+                }
+            };
 
-            authToken = response.token;
-            currentUser = response.user;
-            this.userProfile = response.user;
+            authToken = demoResponse.token;
+            currentUser = demoResponse.user;
+            this.userProfile = demoResponse.user;
 
-            localStorage.setItem('authToken', authToken);
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            // localStorage operations removed for demo
 
             this.updateUIForAuthenticatedUser();
-            return response;
+            return demoResponse;
         } catch (error) {
             throw error;
         }
@@ -143,8 +151,7 @@ class HealthyMealTrack {
         authToken = null;
         currentUser = null;
         this.userProfile = null;
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('currentUser');
+        // localStorage operations removed for demo
         this.redirectToLogin();
     }
 
@@ -198,7 +205,7 @@ class HealthyMealTrack {
 
             this.userProfile = response.user;
             currentUser = response.user;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            // localStorage operations removed for demo
 
             return response;
         } catch (error) {
@@ -206,7 +213,7 @@ class HealthyMealTrack {
         }
     }
 
-    // Real AI Analysis with Google Vision API
+    // Demo Analysis (Frontend Only)
     async analyzeMeal(mealData) {
         console.log('Starting real AI analysis for meal:', mealData);
         
@@ -401,11 +408,12 @@ class HealthyMealTrack {
     unlockAchievement(achievement) {
         this.addPoints(achievement.points);
         this.showAchievementNotification(achievement);
-        localStorage.setItem(`achievement_${achievement.id}`, 'true');
+        // localStorage operations removed for demo
     }
 
     isAchievementUnlocked(achievementId) {
-        return localStorage.getItem(`achievement_${achievementId}`) === 'true';
+        // localStorage operations removed for demo
+        return false;
     }
 
     getHealthyMealsCount() {
